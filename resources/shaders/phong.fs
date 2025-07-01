@@ -35,7 +35,6 @@ void main() {
 
     // texture
     vec3 texColor = texture(diffuseMap, fragTexCoord).rgb;
-
     texColor = pow(texColor, vec3(2.2)); // gamma correction
 
     // accumulators

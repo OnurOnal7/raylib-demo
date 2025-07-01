@@ -16,38 +16,28 @@ typedef struct  {
 } Orbit;
 
 Orbit orbits[NUM_ORBITS] = {
-    //{ {1.0f, 0.0f, 0.0f} }, // red
-    //{ {0.0f, 1.0f, 0.0f} }, // green
-    //{ {0.0f, 0.0f, 1.0f} }, // blue
+    { {1.0f, 0.0f, 0.0f} }, // red
+    { {0.0f, 1.0f, 0.0f} }, // green
+    { {0.0f, 0.0f, 1.0f} }, // blue
     { {0.9921f, 0.9843f, 0.8274f} }, // white
-    { {0.9921f, 0.9843f, 0.8274f} },
-    { {0.9921f, 0.9843f, 0.8274f} },
-    { {0.9921f, 0.9843f, 0.8274f} }
-    //{ {1.0f, 1.0f, 0.0f} }, // yellow
-    //{ {1.0f, 0.0f, 1.0f} }, // magenta
-    //{ {0.0f, 1.0f, 1.0f} }, // cyan
-    //{ {1.0f, 0.4f, 0.0f} }  // orange
+    { {1.0f, 1.0f, 0.0f} }, // yellow
+    { {1.0f, 0.0f, 1.0f} }, // magenta
+    { {0.0f, 1.0f, 1.0f} }, // cyan
+    { {1.0f, 0.4f, 0.0f} }  // orange
 };
 
 Vector3 starts[NUM_ORBITS] = {
-    {8.3f, 1.7f, 0.0f},
-    {4.3f, 1.7f, 0.0f},
-    {0.3f, 1.7f, 0.0f},
-    {-4.3f, 1.7f, 0.0f}
-    /*
-    {-5.4f, 3.0f, 0.0f}, 
-    {6.3f, 3.0f, 0.0f}, 
-    {5.1f, 3.0f, 0.0f}, 
-    {3.9f, 3.0f, 0.0f}, 
-    {1.5f, 3.0f, 0.0f}, 
-    {-1.5f, 3.0f, 0.0f}, 
-    {-3.9f, 3.0f, 0.0f}, 
-    {-7.4f, 3.0f, 0.0f}
-    */
+    {8.5f, 1.7f, 0.0f},
+    {6.0f, 1.7f, 0.0f},
+    {3.5f, 1.7f, 0.0f},
+    {1.0f, 1.7f, 0.0f},
+    {-1.0f, 1.7f, 0.0f}, 
+    {-3.5f, 1.7f, 0.0f}, 
+    {-6.0f, 1.7f, 0.0f}, 
+    {-8.5f, 1.7f, 0.0f}, 
 };
 
 Vector3 axes[NUM_ORBITS] = {
-    /*
     {0.7071, 0.7071, 0}, 
     {1, 0, 0}, 
     {-0.7071, 0.7071, 0}, 
@@ -56,7 +46,6 @@ Vector3 axes[NUM_ORBITS] = {
     {-0.7071, 0.7071, 0}, 
     {1, 0, 0},
     {0.7071, 0.7071, 0}, 
-    */
 };
 
 int main(void) {
@@ -222,19 +211,10 @@ int main(void) {
         ImageDraw(&atlas, faces[i], srcRec, dstRecs[i], WHITE);
     }
 
-    // Load textures and models
-    //Model moonModel = LoadModel("resources/objects/sponza.glb");
-    //Texture2D moonTex = LoadTexture("resources/textures/moon.jpg");
-    //Texture2D moonNormalTex = LoadTexture("resources/textures/moon_normal.jpg");
-
     Model sponzaModel = LoadModel("resources/objects/sponza.glb");
     for (int i = 0; i < sponzaModel.materialCount; i++) {
         sponzaModel.materials[i].shader = sh;        
     }
-
-    //moonModel.materials[0].shader = sh;
-    //moonModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = moonTex;
-    //moonModel.materials[0].maps[MATERIAL_MAP_NORMAL].texture = moonNormalTex;
 
     Texture2D sunTex = LoadTexture("resources/textures/sun.jpg"); 
 
@@ -271,26 +251,17 @@ int main(void) {
     }
 
     // Set colors
-    Vector3 ambientColor = { 0.001f, 0.001f, 0.001f };
-    Vector3 specularColor = { 1.0f, 1.0f, 1.0f };
+    Vector3 ambientColor = { 0.0001f, 0.0001f, 0.0001f };
+    Vector3 specularColor = { 0.1f, 0.1f, 0.1f };
     float shininess = 32.0f;
 
     // Set HDR/bloom parameters
     float exposure = 1.0f;
     float gamma = 2.2f;
-    float bloomThreshold = 1.0f;
-
-    // Set objects rotation and scale
-    float moonSpinAngle = 0.0f;
-    float moonSpinSpeed = 45.0;
-    Vector3 moonSpinAxis = { 0.0f, 1.0f, 0.0f };
-    Vector3 moonScale = { 0.7f, 0.7f, 0.7f };
 
     float orbitSpinAngle = 0.0f;
     float orbitSpinSpeed = 0;
     Vector3 orbitScale = { 0.2f, 0.2f, 0.2f };
-
-    //bool updateCamera = false;
     
     while (!WindowShouldClose()) {
         // Check for window resize
@@ -301,10 +272,7 @@ int main(void) {
             currentHeight = newHeight;
             createRenderTextures(currentWidth, currentHeight, hdr, bright, pingpong);
         }
-        /*
-        if (updateCamera)
-            UpdateCamera(&cam, CAMERA_FREE);
-        */
+ 
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
             UpdateCamera(&cam, CAMERA_FREE);
 
@@ -320,7 +288,6 @@ int main(void) {
 
         // Calculate rotation angles
         float dt = GetFrameTime();
-        moonSpinAngle += moonSpinSpeed * dt;
         orbitSpinAngle += orbitSpinSpeed * dt;
 
         Vector3 positions[NUM_ORBITS];
@@ -365,7 +332,6 @@ int main(void) {
                 EndShaderMode();
 
                 BeginShaderMode(sh);
-                    //DrawModelEx(moonModel, (Vector3) {0.0f, 0.0f, 0.0f}, moonSpinAxis, moonSpinAngle, moonScale, WHITE);
                     DrawModel(sponzaModel, Vector3{0.0f, 0.0f, 0.0f}, 1.0f, WHITE);
                 EndShaderMode();
 
@@ -379,8 +345,6 @@ int main(void) {
 
             EndMode3D();
                               
-
-            //DrawFPS(10, 10);
         EndTextureMode();
         //EndDrawing();
 
@@ -420,7 +384,6 @@ int main(void) {
             EndShaderMode();
 
             rlImGuiBegin();
-
             
             if (ImGui::Begin("Controls")) {
                 ImGui::DragFloat3("Camera Pos", (float*)&cam.position, 0.01f, -10.0f, 10.0f);
@@ -442,9 +405,6 @@ int main(void) {
     UnloadShader(shHDR);
     UnloadShader(shBlur);
     for (int i = 0; i < NUM_ORBITS; i++) UnloadModel(orbitModels[i]);
-    //UnloadModel(moonModel);
-    //UnloadTexture(moonTex);
-    //UnloadTexture(moonNormalTex);
     UnloadTexture(sunTex);
     UnloadTexture(hdr.texture);
     UnloadTexture(bright.texture);

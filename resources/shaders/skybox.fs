@@ -8,7 +8,7 @@ in vec3 texDir;
 uniform samplerCube cubemap;
 
 void main() {
-    fragColor = texture(cubemap, normalize(texDir));
-    fragColor = pow(fragColor, vec4(2.2));
+    vec4 texColor = texture(cubemap, normalize(texDir));
+    fragColor = pow(texColor, vec4(2.2)); // gamma correction
     brightColor = vec4(0.0, 0.0, 0.0, 0.0);
 }
