@@ -82,6 +82,7 @@ int main(void) {
         hdr.texture.height = height;
         hdr.texture.mipmaps = 1;
         hdr.texture.format = RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16;
+        SetTextureWrap(hdr.texture, TEXTURE_WRAP_CLAMP);
 
         // Create bright render texture
         bright = LoadRenderTexture(width, height);
@@ -91,6 +92,7 @@ int main(void) {
         bright.texture.height = height;
         bright.texture.mipmaps = 1;
         bright.texture.format = RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16;
+        SetTextureWrap(bright.texture, TEXTURE_WRAP_CLAMP);
 
         // Bind the same FBO and attach both to it
         rlBindFramebuffer(RL_DRAW_FRAMEBUFFER, hdr.id);
@@ -115,6 +117,7 @@ int main(void) {
             pingpong[i].texture.height = height;
             pingpong[i].texture.mipmaps = 1;
             pingpong[i].texture.format = RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16;
+            SetTextureWrap(pingpong[i].texture, TEXTURE_WRAP_CLAMP);
 
             rlBindFramebuffer(RL_DRAW_FRAMEBUFFER, pingpong[i].id);
             rlBindFramebuffer(RL_READ_FRAMEBUFFER, pingpong[i].id);
@@ -145,9 +148,9 @@ int main(void) {
     
     // Load shaders
     Shader sh = LoadShader("resources/shaders/default.vs", "resources/shaders/phong.fs");
-    int locLightPos  = GetShaderLocation(sh, "u_lightPos[0]");
-    int locLightCol  = GetShaderLocation(sh, "u_lightColor[0]");
-    int locLightInt  = GetShaderLocation(sh, "u_lightIntensity[0]");
+    int locLightPos  = GetShaderLocation(sh, "u_lightPos");
+    int locLightCol  = GetShaderLocation(sh, "u_lightColor");
+    int locLightInt  = GetShaderLocation(sh, "u_lightIntensity");
     int locEyePos    = GetShaderLocation(sh, "u_eyePos");
     int locAmb       = GetShaderLocation(sh, "u_ambientColor");
     int locSpec      = GetShaderLocation(sh, "u_specularColor");
